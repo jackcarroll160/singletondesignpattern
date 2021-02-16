@@ -1,3 +1,5 @@
+package singletondesignpattern;
+
 import java.util.HashMap;
 
 /**
