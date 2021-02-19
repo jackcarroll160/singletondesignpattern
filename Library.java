@@ -1,23 +1,31 @@
 package singletondesignpattern;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Library Class 
+ * Library Class
+ * 
  * @author Jackson Carroll
  */
 public class Library {
-    
-    private HashMap<String, Integer> books;
-    private static Library library;
+
+    private HashMap<String, Integer> books = new HashMap<>();
+    private static Library library = null;
 
     /**
      * Private Library constructor to prevent the creation of instances of the class
      */
-    private Library() {}
+    private Library() {
+    }
 
+    /**
+     * Static method to get an instance of Library class
+     * 
+     * @return the library
+     */
     public static Library getInstance() {
-        if(Library == null) {
+        if (library == null) {
             System.out.println("Creating our Library. Time to begin reading.");
             library = new Library();
         }
@@ -25,38 +33,41 @@ public class Library {
     }
 
     public boolean checkoutBook(String bookName) {
-        while(books.hasNext()) {
-            if(books.getKey(bookName) && books.getValue() >= 1) {
-                books.remove(bookName, books.getValue() - 1);
-                System.out.println(bookName + " was successfully checked out");
-                return true;
-            }
-            else {
-                System.out.println("Sorry " + bookName + " is not in stock");
-                return false;
-            }
+        if (books.containsKey(bookName) && books.get(bookName) > 0) {
+            books.put(bookName, books.get(bookName)-1);
+            System.out.println(bookName + " was successfully checked out");
+            return true;
+        } 
+        else {
+            books.putIfAbsent(bookName, 0);
+            System.out.println("Sorry " + bookName + " is not in stock");
+            return false;
         }
     }
 
     public void checkInBook(String bookName, int numToAdd) {
-        while(books.hasNext()) {
-            if(books.getKey(bookName)) {
-                numToAdd += books.getValue();
-            }
-            else {
-                books.put(bookName, numToAdd);
-            }
+        if (books.containsKey(bookName)) {
+            numToAdd += books.get(bookName);
+            books.put(bookName, numToAdd);
+            System.out.println("A new copy of " + bookName + " was added to the library");
         }
-        System.out.println(bookName + " was added to the library");
+        else {
+            books.put(bookName, numToAdd);
+            System.out.println(bookName + " was added to the library");
+        }
     }
 
+    /**
+     * Displays the inventory followed by each book in stock
+     */
     public void displayBooks() {
-        System.out.println("Inventory:");
+        System.out.println("\nInventory:");
 
-        while(books.hasNext()) {
-            System.out.println("\t- " + books.getKey() + ", copies: " + books.getValue());
-        }
+        for (Map.Entry<String, Integer> entry : books.entrySet()) {
+            String key = entry.getKey();
+            int value = entry.getValue();
+            System.out.println("  - " + key + ", copies: " + value);
+        } 
     }
-
 
 }
