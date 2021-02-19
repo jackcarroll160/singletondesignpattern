@@ -4,8 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Library Class
- * 
+ * Class for a Library
  * @author Jackson Carroll
  */
 public class Library {
@@ -16,12 +15,10 @@ public class Library {
     /**
      * Private Library constructor to prevent the creation of instances of the class
      */
-    private Library() {
-    }
+    private Library() {}
 
     /**
      * Static method to get an instance of Library class
-     * 
      * @return the library
      */
     public static Library getInstance() {
@@ -32,9 +29,14 @@ public class Library {
         return library;
     }
 
+    /**
+     * Checks out a book by its name
+     * @param bookName A String for the book name
+     * @return true or false
+     */
     public boolean checkoutBook(String bookName) {
         if (books.containsKey(bookName) && books.get(bookName) > 0) {
-            books.put(bookName, books.get(bookName)-1);
+            books.put(bookName, books.get(bookName) - 1);
             System.out.println(bookName + " was successfully checked out");
             return true;
         } 
@@ -45,6 +47,11 @@ public class Library {
         }
     }
 
+    /**
+     * Checks in a book by name with its number of copies being checked in
+     * @param bookName A String for the book name
+     * @param numToAdd An integer for the number of copies to add
+     */
     public void checkInBook(String bookName, int numToAdd) {
         if (books.containsKey(bookName)) {
             numToAdd += books.get(bookName);
